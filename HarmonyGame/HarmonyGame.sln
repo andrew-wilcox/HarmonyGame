@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarmonyGame", "HarmonyGame\HarmonyGame\HarmonyGame.csproj", "{FA11B614-5350-49E0-9F4C-FB574BB2229C}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "HarmonyGameContent", "HarmonyGame\HarmonyGameContent\HarmonyGameContent.contentproj", "{CB47AB8D-A1AE-4B06-B708-F87DF5DBBA7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA11B614-5350-49E0-9F4C-FB574BB2229C}.Debug|x86.ActiveCfg = Debug|x86
+		{FA11B614-5350-49E0-9F4C-FB574BB2229C}.Debug|x86.Build.0 = Debug|x86
+		{FA11B614-5350-49E0-9F4C-FB574BB2229C}.Release|x86.ActiveCfg = Release|x86
+		{FA11B614-5350-49E0-9F4C-FB574BB2229C}.Release|x86.Build.0 = Release|x86
+		{CB47AB8D-A1AE-4B06-B708-F87DF5DBBA7C}.Debug|x86.ActiveCfg = Debug|x86
+		{CB47AB8D-A1AE-4B06-B708-F87DF5DBBA7C}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
