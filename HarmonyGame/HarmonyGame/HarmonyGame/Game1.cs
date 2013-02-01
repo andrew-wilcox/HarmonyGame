@@ -23,6 +23,7 @@ namespace HarmonyGame
         SpriteBatch spriteBatch;
 
         Sprite mSprite;
+        Wizard mWizard;
 
         List<Sprite> bgList;
 
@@ -42,12 +43,13 @@ namespace HarmonyGame
         {
             bgList = new List<Sprite>();
             mSprite = new Sprite();
+            mWizard = new Wizard();
 
             //Initialize all background objects
             for (int i = 0; i < 5; i++)
             {
                 bgList.Add(new Sprite());
-                bgList[i].mScale = 2.0f;
+                bgList[i].mScale = 1.7f;
             }
 
             base.Initialize();
@@ -62,9 +64,8 @@ namespace HarmonyGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mSprite.LoadContent(this.Content, "lookit");
-            mSprite.setPosition(new Vector2(125, 245));
-            mSprite.mScale = 4.0f;
+            mWizard.LoadContent(this.Content);
+            mWizard.Scale = 2.5f;
 
             bgList[0].LoadContent(this.Content, "Background01");
             bgList[0].Position = new Vector2(0, 0);
@@ -80,7 +81,6 @@ namespace HarmonyGame
 
             bgList[4].LoadContent(this.Content, "Background05");
             bgList[4].Position = new Vector2(bgList[3].Position.X + bgList[3].Size.Width, 0);
-
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace HarmonyGame
                 this.Exit();
 
             moveBackground(gameTime, bgList);
-
+            mWizard.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -124,7 +124,7 @@ namespace HarmonyGame
                 i.Draw(spriteBatch);
             }
 
-            mSprite.Draw(spriteBatch);
+            mWizard.Draw(spriteBatch);
   
             spriteBatch.End();
 
