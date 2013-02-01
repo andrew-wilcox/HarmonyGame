@@ -11,6 +11,9 @@ using Microsoft.Xna.Framework.Media;
 
 namespace HarmonyGame
 {
+    //****************
+    //BEGIN GAME LOGIC
+    //****************
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -19,7 +22,9 @@ namespace HarmonyGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private Texture2D Jimi;
+        Sprite mSprite;
+
+        List<Sprite> bgList;
 
         public MainGame()
         {
@@ -35,7 +40,15 @@ namespace HarmonyGame
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            bgList = new List<Sprite>();
+            mSprite = new Sprite();
+
+            //Initialize all background objects
+            for (int i = 0; i < 5; i++)
+            {
+                bgList.Add(new Sprite());
+                bgList[i].mScale = 2.0f;
+            }
 
             base.Initialize();
         }
@@ -49,7 +62,25 @@ namespace HarmonyGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Jimi = Content.Load<Texture2D>("lookit");
+            mSprite.LoadContent(this.Content, "lookit");
+            mSprite.setPosition(new Vector2(125, 245));
+            mSprite.mScale = 4.0f;
+
+            bgList[0].LoadContent(this.Content, "Background01");
+            bgList[0].Position = new Vector2(0, 0);
+
+            bgList[1].LoadContent(this.Content, "Background02");
+            bgList[1].Position = new Vector2(bgList[0].Position.X + bgList[0].Size.Width, 0);
+
+            bgList[2].LoadContent(this.Content, "Background03");
+            bgList[2].Position = new Vector2(bgList[1].Position.X + bgList[1].Size.Width, 0);
+
+            bgList[3].LoadContent(this.Content, "Background04");
+            bgList[3].Position = new Vector2(bgList[2].Position.X + bgList[2].Size.Width, 0);
+
+            bgList[4].LoadContent(this.Content, "Background05");
+            bgList[4].Position = new Vector2(bgList[3].Position.X + bgList[3].Size.Width, 0);
+
         }
 
         /// <summary>
@@ -72,7 +103,8 @@ namespace HarmonyGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            moveBackground(gameTime, bgList);
+
 
             base.Update(gameTime);
         }
@@ -84,13 +116,65 @@ namespace HarmonyGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Jimi, new Rectangle(0, 0, Jimi.Width, Jimi.Height), Color.White);
+            foreach (Sprite i in bgList)
+            {
+                i.Draw(spriteBatch);
+            }
 
+            mSprite.Draw(spriteBatch);
+  
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+        //**************
+        //END GAME LOGIC
+        //**************
+
+        //********************
+        //BEGIN HELPER METHODS
+        //********************
+        public void moveBackground(GameTime gameTime, List<Sprite> l)
+        {
+            Vector2 speed = new Vector2(80, 0);
+            Vector2 direction = new Vector2(-1, 0);
+
+            if (l[0].Position.X < -l[0].Size.Width)
+            {
+                l[0].Position.X = l[4].Position.X + l[4].Size.Width;
+            }
+
+            if (l[1].Position.X < -l[1].Size.Width)
+            {
+                l[1].Position.X = l[0].Position.X + l[0].Size.Width;
+            }
+
+            if (l[2].Position.X < -l[2].Size.Width)
+            {
+                l[2].Position.X = l[1].Position.X + l[1].Size.Width;
+            }
+
+            if (l[3].Position.X < -l[3].Size.Width)
+            {
+                l[3].Position.X = l[2].Position.X + l[2].Size.Width;
+            }
+
+            if (l[4].Position.X < -l[4].Size.Width)
+            {
+                l[4].Position.X = l[3].Position.X + l[3].Size.Width;
+            }
+
+            l[0].Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            l[1].Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            l[2].Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            l[3].Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            l[4].Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+        //******************
+        //END HELPER METHODS
+        //******************
     }
 }
