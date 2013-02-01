@@ -58,7 +58,10 @@ namespace HarmonyGame
         //**************
         //END PROPERTIES
         //**************
-
+        
+        //******************
+        //BEGIN MAIN METHODS
+        //******************
         public Sprite()
         {
         }
@@ -71,7 +74,7 @@ namespace HarmonyGame
             Size = new Rectangle(0, 0, (int)(Texture.Width * Scale), (int)(Texture.Height * Scale));
         }
 
-        public void Draw(SpriteBatch theSpriteBatch)
+        public virtual void Draw(SpriteBatch theSpriteBatch)
         {
             theSpriteBatch.Draw(Texture, Position, Source, Color.White,
                 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
@@ -81,6 +84,9 @@ namespace HarmonyGame
         {
             Position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
+        //****************
+        //END MAIN METHODS
+        //****************
 
         //*************************
         //BEGIN GETTERS AND SETTERS

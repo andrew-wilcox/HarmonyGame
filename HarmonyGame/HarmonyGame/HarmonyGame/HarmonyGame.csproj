@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fireball.cs" />
     <Compile Include="Wizard.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

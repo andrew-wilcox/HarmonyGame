@@ -40,9 +40,20 @@ namespace HarmonyGame
 
         KeyboardState mPreviousKeyboardState;
 
+        List<Fireball> mFireballs = new List<Fireball>();
+
+        ContentManager mContentManager;
+
 
         public void LoadContent(ContentManager theContentManager)
         {
+            mContentManager = theContentManager;
+
+            foreach (Fireball aFireball in mFireballs)
+            {
+                aFireball.LoadContent(mContentManager);
+            }
+
             Position = new Vector2(START_POSITION_X, START_POSITION_Y);
             base.LoadContent(theContentManager, WIZARD_ASSETNAME);
             Source = new Rectangle(0, 0, 13, Source.Height);
@@ -55,10 +66,60 @@ namespace HarmonyGame
             UpdateMovement(aCurrentKeyboardState);
             UpdateJump(aCurrentKeyboardState);
             UpdateDuck(aCurrentKeyboardState);
+            UpdateFireball(gameTime, aCurrentKeyboardState);
 
             mPreviousKeyboardState = aCurrentKeyboardState;
 
             base.Update(gameTime, mSpeed, mDirection);
+        }
+
+        public void Draw(SpriteBatch theSpriteBatch)
+        {
+            foreach (Fireball aFireball in mFireballs)
+            {
+                aFireball.Draw(theSpriteBatch);
+            }
+            base.Draw(theSpriteBatch);
+        }
+
+        private void UpdateFireball(GameTime gameTime, KeyboardState aCurrentKeyboardState)
+        {
+            foreach (Fireball aFireball in mFireballs)
+            {
+                aFireball.Update(gameTime);
+            }
+
+            if (aCurrentKeyboardState.IsKeyDown(Keys.RightControl) && !mPreviousKeyboardState.IsKeyDown(Keys.RightControl))
+            {
+                LaunchFireball();
+            }
+        }
+
+        private void LaunchFireball()
+        {
+            if (mCurrentState == State.Walking)
+            {
+                bool aCreateNew = true;
+                foreach (Fireball aFireball in mFireballs)
+                {
+                    if (!aFireball.Visible)
+                    {
+                        aCreateNew = false;
+                        aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2),
+                            new Vector2(200, 0), new Vector2(1, 0));
+                        break;
+                    }
+                }
+
+                if (aCreateNew)
+                {
+                    Fireball aFireball = new Fireball();
+                    aFireball.LoadContent(mContentManager);
+                    aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2),
+                            new Vector2(200, 200), new Vector2(1, 0));
+                    mFireballs.Add(aFireball);
+                }
+            }
         }
 
         private void UpdateDuck(KeyboardState aCurrentKeyboardState)
