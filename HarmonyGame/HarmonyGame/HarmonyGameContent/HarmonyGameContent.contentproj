@@ -90,6 +90,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fireball.png">
+      <Name>fireball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="wizardSheet.png">
       <Name>wizardSheet</Name>
       <Importer>TextureImporter</Importer>
@@ -97,8 +104,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="fireball.png">
-      <Name>fireball</Name>
+    <Compile Include="floor.png">
+      <Name>floor</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

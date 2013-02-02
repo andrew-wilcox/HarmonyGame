@@ -22,10 +22,12 @@ namespace HarmonyGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Sprite mSprite;
         Wizard mWizard;
 
+        Sprite mFloor;
+
         List<Sprite> bgList;
+        List<Sprite> platforms;
 
         public MainGame()
         {
@@ -42,8 +44,14 @@ namespace HarmonyGame
         protected override void Initialize()
         {
             bgList = new List<Sprite>();
-            mSprite = new Sprite();
+            platforms = new List<Sprite>();
+
+            mFloor = new Sprite();
+
             mWizard = new Wizard();
+            mFloor = new Sprite();
+
+            platforms.Add(mFloor);
 
             //Initialize all background objects
             for (int i = 0; i < 5; i++)
@@ -81,6 +89,11 @@ namespace HarmonyGame
 
             bgList[4].LoadContent(this.Content, "Background05");
             bgList[4].Position = new Vector2(bgList[3].Position.X + bgList[3].Size.Width, 0);
+
+            mFloor.LoadContent(this.Content, "floor");
+            mFloor.Scale = 4.0f;
+            mFloor.Position = new Vector2(0, 445);
+
         }
 
         /// <summary>
@@ -100,11 +113,9 @@ namespace HarmonyGame
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
+            mFloor.Update(gameTime, Vector2.Zero, Vector2.Zero, platforms);
             moveBackground(gameTime, bgList);
-            mWizard.Update(gameTime);
+            mWizard.Update(gameTime, platforms);
 
             base.Update(gameTime);
         }
@@ -123,6 +134,8 @@ namespace HarmonyGame
             {
                 i.Draw(spriteBatch);
             }
+
+            mFloor.Draw(spriteBatch);
 
             mWizard.Draw(spriteBatch);
   

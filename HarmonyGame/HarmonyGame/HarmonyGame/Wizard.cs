@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HarmonyGame
 {
-
     class Wizard : Sprite
     {
         const string WIZARD_ASSETNAME = "wizardSheet";
@@ -59,10 +58,19 @@ namespace HarmonyGame
             Source = new Rectangle(0, 0, 13, Source.Height);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, List<Sprite> platforms)
         {
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
 
+            foreach (Sprite s in platforms)
+            {
+                if (DumbCollides(this, s))
+                {
+                    //Position.X = s.Position.X;
+                    Position.Y = s.Position.Y - s.SpriteTexture.Height - this.SpriteTexture.Height;
+                    break;
+                }
+            }
             UpdateMovement(aCurrentKeyboardState);
             UpdateJump(aCurrentKeyboardState);
             UpdateDuck(aCurrentKeyboardState);
@@ -225,6 +233,17 @@ namespace HarmonyGame
                     mDirection.Y = MOVE_DOWN;
                 }
             }
+        }
+
+        public bool DumbCollides(Sprite sprite1, Sprite sprite2)
+        {
+            if (sprite1.Bounds.Intersects(sprite2.Bounds))
+            {
+                Logger("Collision Detected");
+                return true;
+            }
+
+            return false;
         }
        
     }

@@ -32,7 +32,11 @@ namespace HarmonyGame
         //****************
         //BEGIN PROPERTIES
         //****************
-
+        public Texture2D SpriteTexture
+        {
+            get { return Texture;}
+            set { Texture = value; }
+        }
         public Rectangle Source
         {
             get { return mSource; }
@@ -53,6 +57,11 @@ namespace HarmonyGame
                 mScale = value;
                 Size = new Rectangle(0, 0, (int)(Source.Width * Scale), (int)(Source.Height * Scale));
             }
+        }
+
+        public Rectangle Bounds
+        {
+            get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
         }
 
         //**************
@@ -80,6 +89,11 @@ namespace HarmonyGame
                 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
         }
 
+        public void Update(GameTime gameTime, Vector2 speed, Vector2 direction, List<Sprite> Platforms)
+        {
+            Position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
         public void Update(GameTime gameTime, Vector2 speed, Vector2 direction)
         {
             Position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -88,31 +102,25 @@ namespace HarmonyGame
         //END MAIN METHODS
         //****************
 
-        //*************************
-        //BEGIN GETTERS AND SETTERS
-        //*************************
-        public Vector2 getPosition()
+        //********************
+        //BEGIN HELPER METHODS
+        //********************
+        public void Logger(String lines)
         {
-            return Position;
-        }
 
-        public Texture2D getTexture()
-        {
-            return Texture;
-        }
+            // Write the string to a file.append mode is enabled so that the log
+            // lines get appended to  test.txt than wiping content and writing the log
 
-        public void setPosition(Vector2 vector)
-        {
-            Position = vector;
-        }
+            System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt", true);
+            file.WriteLine(lines);
 
-        public void setTexture(Texture2D t)
-        {
-            Texture = t;
+            file.Close();
+
         }
-        //***********************
-        //END GETTERS AND SETTERS
-        //***********************
+        
+        //******************
+        //END HELPER METHODS
+        //******************
     }
 
 }
