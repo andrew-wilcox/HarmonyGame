@@ -29,6 +29,9 @@ namespace HarmonyGame
         //the sprite
         Rectangle mSource;
 
+        //Quick check to see if this sprite is on a floor
+        public bool onFloor = false;
+
         //****************
         //BEGIN PROPERTIES
         //****************
@@ -61,7 +64,7 @@ namespace HarmonyGame
 
         public Rectangle Bounds
         {
-            get { return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); }
+            get { return new Rectangle((int)Position.X, (int)Position.Y, (int)(Texture.Width * Scale), (int)(Texture.Height * Scale)); }
         }
 
         //**************

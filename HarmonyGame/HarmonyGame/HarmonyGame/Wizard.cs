@@ -19,10 +19,8 @@ namespace HarmonyGame
         const int START_POSITION_X = 125;
         const int START_POSITION_Y = 245;
         const int WIZARD_SPEED = 160;
-        const int MOVE_UP = -1;
-        const int MOVE_DOWN = 1;
-        const int MOVE_LEFT = -1;
-        const int MOVE_RIGHT = 1;
+        const int JUMP_SPEED = 500;
+        const float GRAVITY = 25f;
 
         enum State
         {
@@ -34,7 +32,7 @@ namespace HarmonyGame
         State mCurrentState = State.Walking;
 
         Vector2 mDirection = Vector2.Zero;
-        Vector2 mSpeed = Vector2.Zero;
+        Vector2 mVelocity = Vector2.Zero;
         Vector2 mStartingPosition = Vector2.Zero;
 
         KeyboardState mPreviousKeyboardState;
@@ -42,7 +40,6 @@ namespace HarmonyGame
         List<Fireball> mFireballs = new List<Fireball>();
 
         ContentManager mContentManager;
-
 
         public void LoadContent(ContentManager theContentManager)
         {
@@ -62,23 +59,16 @@ namespace HarmonyGame
         {
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
 
-            foreach (Sprite s in platforms)
-            {
-                if (DumbCollides(this, s))
-                {
-                    //Position.X = s.Position.X;
-                    Position.Y = s.Position.Y - s.SpriteTexture.Height - this.SpriteTexture.Height;
-                    break;
-                }
-            }
-            UpdateMovement(aCurrentKeyboardState);
-            UpdateJump(aCurrentKeyboardState);
+            //Check collision against all floors
+            ManageFloorCollisions(platforms);
+
+            UpdateMovement(aCurrentKeyboardState, gameTime);
             UpdateDuck(aCurrentKeyboardState);
             UpdateFireball(gameTime, aCurrentKeyboardState);
 
             mPreviousKeyboardState = aCurrentKeyboardState;
 
-            base.Update(gameTime, mSpeed, mDirection);
+            base.Update(gameTime, mVelocity, mDirection);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
@@ -147,8 +137,7 @@ namespace HarmonyGame
             if (mCurrentState == State.Walking)
             {
                 mCurrentState = State.Ducking;
-                mDirection = Vector2.Zero;
-                mSpeed = Vector2.Zero;
+                mDirection = mVelocity = Vector2.Zero;
 
                 Source = new Rectangle(13, 0, 13, Source.Height);
             }
@@ -164,73 +153,60 @@ namespace HarmonyGame
             }
         }
 
-
-        private void UpdateJump(KeyboardState aCurrentKeyboardState)
-        {
-            if (mCurrentState == State.Walking)
-            {
-                if (aCurrentKeyboardState.IsKeyDown(Keys.Space) && !mPreviousKeyboardState.IsKeyDown(Keys.Space))
-                {
-                    Jump();
-                }
-            }
-
-            if (mCurrentState == State.Jumping)
-            {
-                if (mStartingPosition.Y - Position.Y > MAX_JUMP_HEIGHT)
-                {
-                    mDirection.Y = MOVE_DOWN;
-                }
-
-                if (Position.Y > mStartingPosition.Y)
-                {
-                    Position.Y = mStartingPosition.Y;
-                    mCurrentState = State.Walking;
-                    mDirection = Vector2.Zero;
-                }
-            }
-        }
-
-        private void Jump()
+        private void Jump(GameTime gameTime)
         {
             if (mCurrentState != State.Jumping)
             {
+                onFloor = false;
+
                 mCurrentState = State.Jumping;
-                mStartingPosition = Position;
-                mDirection.Y = MOVE_UP;
-                mSpeed = new Vector2(WIZARD_SPEED, WIZARD_SPEED);
+                mVelocity.Y = -JUMP_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 
-        private void UpdateMovement(KeyboardState aCurrentKeyboardState)
+        private void UpdateMovement(KeyboardState aCurrentKeyboardState, GameTime gameTime)
         {
-            if (mCurrentState == State.Walking)
+            if (aCurrentKeyboardState.IsKeyDown(Keys.Left))
             {
-                mSpeed = Vector2.Zero;
-                mDirection = Vector2.Zero;
+                mVelocity.X = -WIZARD_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
 
-                if (aCurrentKeyboardState.IsKeyDown(Keys.Left) == true)
-                {
-                    mSpeed.X = WIZARD_SPEED;
-                    mDirection.X = MOVE_LEFT;
-                }
+            else if (aCurrentKeyboardState.IsKeyDown(Keys.Right))
+            {
+                mVelocity.X = WIZARD_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+                mVelocity.X = 0;
 
-                else if (aCurrentKeyboardState.IsKeyDown(Keys.Right) == true)
-                {
-                    mSpeed.X = WIZARD_SPEED;
-                    mDirection.X = MOVE_RIGHT;
-                }
+            if (aCurrentKeyboardState.IsKeyDown(Keys.Space))
+                Jump(gameTime);
 
-                if (aCurrentKeyboardState.IsKeyDown(Keys.Up) == true)
-                {
-                    mSpeed.Y = WIZARD_SPEED;
-                    mDirection.Y = MOVE_UP;
-                }
+            UpdateGravity(gameTime);
 
-                else if (aCurrentKeyboardState.IsKeyDown(Keys.Down) == true)
+            Position += mVelocity;
+        }
+
+        public void UpdateGravity(GameTime gameTime)
+        {
+            if (!onFloor)
+            {
+                mVelocity.Y += GRAVITY * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        public void ManageFloorCollisions(List<Sprite> platforms)
+        {
+            if (!onFloor)
+            {
+                foreach (Sprite s in platforms)
                 {
-                    mSpeed.Y = WIZARD_SPEED;
-                    mDirection.Y = MOVE_DOWN;
+                    if (DumbCollides(this, s))
+                    {
+                        Position.Y = s.Position.Y - (int)(this.SpriteTexture.Height * this.Scale);
+                        onFloor = true;
+                        mVelocity.Y = 0;
+                        break;
+                    }
                 }
             }
         }
@@ -239,7 +215,6 @@ namespace HarmonyGame
         {
             if (sprite1.Bounds.Intersects(sprite2.Bounds))
             {
-                Logger("Collision Detected");
                 return true;
             }
 
