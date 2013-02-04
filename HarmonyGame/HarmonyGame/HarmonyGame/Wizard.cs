@@ -70,7 +70,7 @@ namespace HarmonyGame
 
             mPreviousKeyboardState = aCurrentKeyboardState;
 
-            base.Update(gameTime, mVelocity, mDirection);
+            base.Update(gameTime, mVelocity);
         }
 
         public void Draw(SpriteBatch theSpriteBatch)
@@ -97,7 +97,6 @@ namespace HarmonyGame
 
         private void LaunchFireball()
         {
-            
             if (mCurrentState == State.Walking)
             {
                 bool aCreateNew = true;
@@ -106,8 +105,7 @@ namespace HarmonyGame
                     if (!aFireball.Visible)
                     {
                         aCreateNew = false;
-                        aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2),
-                            new Vector2(200, 0), new Vector2(1, 0));
+                        aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2));
                         break;
                     }
                 }
@@ -116,8 +114,7 @@ namespace HarmonyGame
                 {
                     Fireball aFireball = new Fireball(this);
                     aFireball.LoadContent(mContentManager);
-                    aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2),
-                            new Vector2(200, 200), new Vector2(1, 0));
+                    aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2));
                     mFireballs.Add(aFireball);
                 }
             }

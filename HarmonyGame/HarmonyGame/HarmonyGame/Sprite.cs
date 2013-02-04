@@ -92,14 +92,14 @@ namespace HarmonyGame
                 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
         }
 
-        public void Update(GameTime gameTime, Vector2 speed, Vector2 direction, List<Sprite> Platforms)
+        public void Update(GameTime gameTime, Vector2 velocity, List<Sprite> Platforms)
         {
             Position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public void Update(GameTime gameTime, Vector2 speed, Vector2 direction)
+        public void Update(GameTime gameTime, Vector2 velocity)
         {
-            Position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
         //****************
         //END MAIN METHODS

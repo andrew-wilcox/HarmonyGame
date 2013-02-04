@@ -11,14 +11,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HarmonyGame
 {
-    class Fireball : Sprite
+    class Fireball : Projectile
     {
         const int MAX_DISTANCE = 500;
         const string FIREBALL_ASSETNAME = "fireball";
+        const Vector2 FIREBALL_VELOCITY = new Vector2(200, 0);
 
         public bool Visible = false;
 
-        Vector2 mStartPosition, mSpeed, mDirection;
+        Vector2 mStartPosition, mVelocity;
 
         Sprite Creator;
 
@@ -30,39 +31,21 @@ namespace HarmonyGame
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, FIREBALL_ASSETNAME);
-            Scale = 1.0f;
         }
 
         public void Update(GameTime gameTime)
         {
-            if(Vector2.Distance(mStartPosition, Position) > MAX_DISTANCE)
-            {
-                Visible = false;
-            }
-
-            if (Visible)
-            {
-                base.Update(gameTime, mSpeed, mDirection);
-            }
+            base.Update(gameTime, mVelocity);
         }
 
-        public override void  Draw(SpriteBatch theSpriteBatch)
+        public override void Draw(SpriteBatch theSpriteBatch)
         {
-            if(Visible)
-            {
- 	            base.Draw(theSpriteBatch);
-            }
+ 	        base.Draw(theSpriteBatch);
         }
 
-        public void Launch(Vector2 theStartPosition, Vector2 theSpeed, Vector2 theDirection)
+        public void Launch(Vector2 position)
         {
-            Position = theStartPosition;
-            mStartPosition = theStartPosition;
-            mSpeed = theSpeed;
-            mDirection = theDirection;
-            Visible = true;
+            base.Launch(FIREBALL_VELOCITY, position);
         }
-
-
     }
 }
