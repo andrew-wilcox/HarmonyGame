@@ -20,6 +20,13 @@ namespace HarmonyGame
 
         Vector2 mStartPosition, mSpeed, mDirection;
 
+        Sprite Creator;
+
+        public Fireball(Sprite creator)
+        {
+            Creator = creator;
+        }
+
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, FIREBALL_ASSETNAME);

@@ -37,9 +37,11 @@ namespace HarmonyGame
 
         KeyboardState mPreviousKeyboardState;
 
-        List<Fireball> mFireballs = new List<Fireball>();
+        public List<Fireball> mFireballs = new List<Fireball>();
 
         ContentManager mContentManager;
+
+        Sprite onFloorSprite;
 
         public void LoadContent(ContentManager theContentManager)
         {
@@ -95,6 +97,7 @@ namespace HarmonyGame
 
         private void LaunchFireball()
         {
+            
             if (mCurrentState == State.Walking)
             {
                 bool aCreateNew = true;
@@ -111,7 +114,7 @@ namespace HarmonyGame
 
                 if (aCreateNew)
                 {
-                    Fireball aFireball = new Fireball();
+                    Fireball aFireball = new Fireball(this);
                     aFireball.LoadContent(mContentManager);
                     aFireball.Launch(Position + new Vector2(Size.Width / 2, Size.Height / 2),
                             new Vector2(200, 200), new Vector2(1, 0));
@@ -166,6 +169,18 @@ namespace HarmonyGame
 
         private void UpdateMovement(KeyboardState aCurrentKeyboardState, GameTime gameTime)
         {
+            ManageInput(aCurrentKeyboardState, gameTime);
+
+            UpdateGravity(gameTime);
+
+            if (onFloor)
+                ManageFloorContact();
+
+            Position += mVelocity;
+        }
+
+        public void ManageInput(KeyboardState aCurrentKeyboardState, GameTime gameTime)
+        {
             if (aCurrentKeyboardState.IsKeyDown(Keys.Left))
             {
                 mVelocity.X = -WIZARD_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -180,10 +195,24 @@ namespace HarmonyGame
 
             if (aCurrentKeyboardState.IsKeyDown(Keys.Space))
                 Jump(gameTime);
+        }
 
-            UpdateGravity(gameTime);
+        public void ManageFloorContact()
+        {
+            if (onFloorSprite != null)
+            {
+                if (this.Position.X > onFloorSprite.Position.X + onFloorSprite.SpriteTexture.Width)
+                {
+                    onFloor = false;
+                    onFloorSprite = null;
+                }
 
-            Position += mVelocity;
+                else if (this.Position.X < onFloorSprite.Position.X)
+                {
+                    onFloor = false;
+                    onFloorSprite = null;
+                }
+            }
         }
 
         public void UpdateGravity(GameTime gameTime)
@@ -202,6 +231,8 @@ namespace HarmonyGame
                 {
                     if (DumbCollides(this, s))
                     {
+                        onFloorSprite = s;
+                        mCurrentState = State.Walking;
                         Position.Y = s.Position.Y - (int)(this.SpriteTexture.Height * this.Scale);
                         onFloor = true;
                         mVelocity.Y = 0;

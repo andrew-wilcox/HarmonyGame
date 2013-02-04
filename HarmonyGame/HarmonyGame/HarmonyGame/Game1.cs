@@ -29,6 +29,7 @@ namespace HarmonyGame
 
         List<Sprite> bgList;
         List<Sprite> platforms;
+        List<Fireball> Fireballs;
 
         public MainGame()
         {
@@ -46,6 +47,7 @@ namespace HarmonyGame
         {
             bgList = new List<Sprite>();
             platforms = new List<Sprite>();
+            Fireballs = new List<Fireball>();
 
             mFloor = new Sprite();
             mFloor2 = new Sprite();
@@ -78,10 +80,18 @@ namespace HarmonyGame
             mWizard.LoadContent(this.Content);
             mWizard.Scale = 2.5f;
 
-            bgList[0].LoadContent(this.Content, "Background01");
-            bgList[0].Position = new Vector2(0, 0);
+            foreach (Fireball f in mWizard.mFireballs)
+            {
+                f.LoadContent(this.Content, f.AssetName);
+            }
 
-            bgList[1].LoadContent(this.Content, "Background02");
+            int i = 0;
+            foreach (Sprite bg in bgList)
+            {
+                bg.LoadContent(this.Content, "Background0" + (i+1));
+                bg.Position = new Vector2(bg.Size.Width * i ,0);
+            }
+            /*bgList[1].LoadContent(this.Content, "Background02");
             bgList[1].Position = new Vector2(bgList[0].Position.X + bgList[0].Size.Width, 0);
 
             bgList[2].LoadContent(this.Content, "Background03");
@@ -91,13 +101,13 @@ namespace HarmonyGame
             bgList[3].Position = new Vector2(bgList[2].Position.X + bgList[2].Size.Width, 0);
 
             bgList[4].LoadContent(this.Content, "Background05");
-            bgList[4].Position = new Vector2(bgList[3].Position.X + bgList[3].Size.Width, 0);
+            bgList[4].Position = new Vector2(bgList[3].Position.X + bgList[3].Size.Width, 0);*/
 
             mFloor.LoadContent(this.Content, "floor");
             mFloor.Position = new Vector2(0, 445);
 
             mFloor2.LoadContent(this.Content, "floor");
-            mFloor2.Position = new Vector2(175, 445);
+            mFloor2.Position = new Vector2(175, 400);
         }
 
         /// <summary>
@@ -119,6 +129,7 @@ namespace HarmonyGame
             // Allows the game to exit
             mFloor.Update(gameTime, Vector2.Zero, Vector2.Zero);
             mFloor2.Update(gameTime, Vector2.Zero, Vector2.Zero);
+            updateProjectiles(gameTime, Fireballs);
             moveBackground(gameTime, bgList);
             mWizard.Update(gameTime, platforms);
 
@@ -140,6 +151,11 @@ namespace HarmonyGame
                 i.Draw(spriteBatch);
             }
 
+            foreach (Fireball f in Fireballs)
+            {
+                f.Draw(spriteBatch);
+            }
+
             mFloor.Draw(spriteBatch);
             mFloor2.Draw(spriteBatch);
 
@@ -156,6 +172,13 @@ namespace HarmonyGame
         //********************
         //BEGIN HELPER METHODS
         //********************
+        public void updateProjectiles(GameTime gameTime, List<Fireball> p)
+        {
+            foreach (Fireball fireball in p)
+            {
+                fireball.Update(gameTime);
+            }
+        }
         public void moveBackground(GameTime gameTime, List<Sprite> l)
         {
             Vector2 speed = new Vector2(80, 0);
