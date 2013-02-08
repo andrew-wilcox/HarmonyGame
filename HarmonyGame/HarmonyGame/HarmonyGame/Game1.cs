@@ -91,17 +91,6 @@ namespace HarmonyGame
                 bg.LoadContent(this.Content, "Background0" + (i+1));
                 bg.Position = new Vector2(bg.Size.Width * i ,0);
             }
-            /*bgList[1].LoadContent(this.Content, "Background02");
-            bgList[1].Position = new Vector2(bgList[0].Position.X + bgList[0].Size.Width, 0);
-
-            bgList[2].LoadContent(this.Content, "Background03");
-            bgList[2].Position = new Vector2(bgList[1].Position.X + bgList[1].Size.Width, 0);
-
-            bgList[3].LoadContent(this.Content, "Background04");
-            bgList[3].Position = new Vector2(bgList[2].Position.X + bgList[2].Size.Width, 0);
-
-            bgList[4].LoadContent(this.Content, "Background05");
-            bgList[4].Position = new Vector2(bgList[3].Position.X + bgList[3].Size.Width, 0);*/
 
             mFloor.LoadContent(this.Content, "floor");
             mFloor.Position = new Vector2(0, 445);

@@ -107,8 +107,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionableObject.cs" />
+    <Compile Include="AnimateObject.cs" />
+    <Compile Include="Benign.cs" />
+    <Compile Include="Destructible.cs" />
+    <Compile Include="EventObject.cs" />
+    <Compile Include="Hazard.cs" />
+    <Compile Include="InanimateObject.cs" />
+    <Compile Include="NPC.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="Obstacle.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Detail.cs" />
+    <Compile Include="NonCollidable.cs" />
+    <Compile Include="Collidable.cs" />
+    <Compile Include="Particle.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Fireball.cs" />
+    <Compile Include="Wall.cs" />
     <Compile Include="Wizard.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

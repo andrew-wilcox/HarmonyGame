@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -31,6 +33,9 @@ namespace HarmonyGame
 
         //Quick check to see if this sprite is on a floor
         public bool onFloor = false;
+
+        //Sprite's creator, may be null
+        Sprite creator = null;
 
         //****************
         //BEGIN PROPERTIES
@@ -78,6 +83,11 @@ namespace HarmonyGame
         {
         }
 
+        public Sprite(Sprite creatorSprite)
+        {
+            creator = creatorSprite;
+        }
+
         public void LoadContent(ContentManager theContentManager, string theAssetName)
         {
             Texture = theContentManager.Load<Texture2D>(theAssetName);
@@ -94,7 +104,7 @@ namespace HarmonyGame
 
         public void Update(GameTime gameTime, Vector2 velocity, List<Sprite> Platforms)
         {
-            Position += speed * direction * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public void Update(GameTime gameTime, Vector2 velocity)
