@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HarmonyGame
 {
-    class EventObject : InanimateObject
+    class ActionableObject : InanimateObject
     {
         public virtual void Collides(Sprite sprite)
         {

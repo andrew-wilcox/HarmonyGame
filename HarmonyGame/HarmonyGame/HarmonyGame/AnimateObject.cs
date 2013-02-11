@@ -13,10 +13,9 @@ namespace HarmonyGame
 {
     class AnimateObject : Collidable
     {
-        public override void Collides(Sprite sprite)
+        public override bool Collides(Sprite sprite)
         {
-            //handle collision
-            base.Collides(sprite);
+            return base.Collides(sprite);
         }
 
         public virtual void HandleInput(KeyboardState aCurrentKeyboardState, KeyboardState previousKeyboardState)

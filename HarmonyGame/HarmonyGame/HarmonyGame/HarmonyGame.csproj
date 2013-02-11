@@ -110,6 +110,7 @@
     <Compile Include="ActionableObject.cs" />
     <Compile Include="AnimateObject.cs" />
     <Compile Include="Benign.cs" />
+    <Compile Include="CollisionHandler.cs" />
     <Compile Include="Destructible.cs" />
     <Compile Include="EventObject.cs" />
     <Compile Include="Hazard.cs" />

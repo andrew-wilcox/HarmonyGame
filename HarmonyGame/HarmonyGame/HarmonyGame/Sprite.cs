@@ -12,8 +12,12 @@ namespace HarmonyGame
 {
     public class Sprite
     {
+        //Resolution of each sprite image
+        public int ResolutionX;
+        public int ResolutionY;
+
         //Current position of the sprite
-        public Vector2 Position = new Vector2(0, 0);
+        public Vector2 Position = Vector2.Zero;
 
         //The texture for the sprite
         private Texture2D Texture;
@@ -69,8 +73,14 @@ namespace HarmonyGame
 
         public Rectangle Bounds
         {
-            get { return new Rectangle((int)Position.X, (int)Position.Y, (int)(Texture.Width * Scale), (int)(Texture.Height * Scale)); }
+            get { return new Rectangle((int)Position.X, (int)Position.Y, (int)(ResolutionX * Scale), (int)(ResolutionY * Scale)); }
         }
+
+        public Color[,] ColorData
+        {
+            get { return TextureTo2DArray(this.Texture); }
+        }
+            
 
         //**************
         //END PROPERTIES
@@ -118,6 +128,19 @@ namespace HarmonyGame
         //********************
         //BEGIN HELPER METHODS
         //********************
+        Color[,] TextureTo2DArray(Texture2D texture)
+        {
+            Color[] colors1D = new Color[texture.Width * texture.Height];
+            texture.GetData(colors1D);
+
+            Color[,] colors2D = new Color[texture.Width, texture.Height];
+            for (int x = 0; x < texture.Width; x++)
+                for (int y = 0; y < texture.Height; y++)
+                    colors2D[x, y] = colors1D[x + y * texture.Width];
+
+            return colors2D;
+        }
+
         public void Logger(String lines)
         {
 
@@ -130,7 +153,6 @@ namespace HarmonyGame
             file.Close();
 
         }
-        
         //******************
         //END HELPER METHODS
         //******************

@@ -52,11 +52,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="wizardSheet.png">
-      <Name>wizardSheet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="wizard_ducking.png">
       <Name>wizard_ducking</Name>
       <Importer>TextureImporter</Importer>
@@ -100,6 +95,13 @@
     </Compile>
     <Compile Include="Background01.png">
       <Name>Background01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="wizardSheet.png">
+      <Name>wizardSheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

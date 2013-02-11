@@ -94,9 +94,13 @@ namespace HarmonyGame
 
             mFloor.LoadContent(this.Content, "floor");
             mFloor.Position = new Vector2(0, 445);
+            mFloor.ResolutionX = 300;
+            mFloor.ResolutionY = 3;
 
             mFloor2.LoadContent(this.Content, "floor");
             mFloor2.Position = new Vector2(175, 400);
+            mFloor2.ResolutionX = 300;
+            mFloor2.ResolutionY = 3;
         }
 
         /// <summary>
@@ -115,9 +119,8 @@ namespace HarmonyGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            mFloor.Update(gameTime, Vector2.Zero, Vector2.Zero);
-            mFloor2.Update(gameTime, Vector2.Zero, Vector2.Zero);
+            mFloor.Update(gameTime, Vector2.Zero);
+            mFloor2.Update(gameTime, Vector2.Zero);
             updateProjectiles(gameTime, Fireballs);
             moveBackground(gameTime, bgList);
             mWizard.Update(gameTime, platforms);
@@ -161,7 +164,7 @@ namespace HarmonyGame
         //********************
         //BEGIN HELPER METHODS
         //********************
-        public void updateProjectiles(GameTime gameTime, List<Fireball> p)
+        private void updateProjectiles(GameTime gameTime, List<Fireball> p)
         {
             foreach (Fireball fireball in p)
             {

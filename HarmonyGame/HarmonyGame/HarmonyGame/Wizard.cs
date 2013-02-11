@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HarmonyGame
 {
-    class Wizard : Sprite
+    class Wizard : Player
     {
         const string WIZARD_ASSETNAME = "wizardSheet";
         const int MAX_JUMP_HEIGHT = 150;
@@ -21,6 +21,8 @@ namespace HarmonyGame
         const int WIZARD_SPEED = 160;
         const int JUMP_SPEED = 500;
         const float GRAVITY = 25f;
+        const int RESOLUTION_Y = 13;
+        const int RESOLUTION_X = 13;
 
         enum State
         {
@@ -54,7 +56,10 @@ namespace HarmonyGame
 
             Position = new Vector2(START_POSITION_X, START_POSITION_Y);
             base.LoadContent(theContentManager, WIZARD_ASSETNAME);
-            Source = new Rectangle(0, 0, 13, Source.Height);
+            Source = new Rectangle(0, 0, RESOLUTION_X, Source.Height);
+
+            ResolutionX = RESOLUTION_X;
+            ResolutionY = RESOLUTION_Y;
         }
 
         public void Update(GameTime gameTime, List<Sprite> platforms)
@@ -139,7 +144,7 @@ namespace HarmonyGame
                 mCurrentState = State.Ducking;
                 mDirection = mVelocity = Vector2.Zero;
 
-                Source = new Rectangle(13, 0, 13, Source.Height);
+                Source = new Rectangle(RESOLUTION_X, 0, RESOLUTION_X, Source.Height);
             }
         }
 
@@ -149,7 +154,7 @@ namespace HarmonyGame
             {
                 mCurrentState = State.Walking;
 
-                Source = new Rectangle(0, 0, 13, Source.Height);
+                Source = new Rectangle(0, 0, RESOLUTION_X, Source.Height);
             }
         }
 
@@ -198,7 +203,13 @@ namespace HarmonyGame
         {
             if (onFloorSprite != null)
             {
-                if (this.Position.X > onFloorSprite.Position.X + onFloorSprite.SpriteTexture.Width)
+                CollisionHandler CH = new CollisionHandler();
+                if(!CH.Collides(this, onFloorSprite))
+                {
+                    onFloor = false;
+                    onFloorSprite = null;
+                }
+                /*if (this.Position.X > onFloorSprite.Position.X + onFloorSprite.SpriteTexture.Width)
                 {
                     onFloor = false;
                     onFloorSprite = null;
@@ -208,7 +219,7 @@ namespace HarmonyGame
                 {
                     onFloor = false;
                     onFloorSprite = null;
-                }
+                }*/
             }
         }
 
@@ -222,11 +233,13 @@ namespace HarmonyGame
 
         public void ManageFloorCollisions(List<Sprite> platforms)
         {
+            CollisionHandler CH = new CollisionHandler();
+
             if (!onFloor)
             {
                 foreach (Sprite s in platforms)
                 {
-                    if (DumbCollides(this, s))
+                    if (CH.Collides(this, s))
                     {
                         onFloorSprite = s;
                         mCurrentState = State.Walking;
@@ -237,17 +250,6 @@ namespace HarmonyGame
                     }
                 }
             }
-        }
-
-        public bool DumbCollides(Sprite sprite1, Sprite sprite2)
-        {
-            if (sprite1.Bounds.Intersects(sprite2.Bounds))
-            {
-                return true;
-            }
-
-            return false;
-        }
-       
+        }       
     }
 }
