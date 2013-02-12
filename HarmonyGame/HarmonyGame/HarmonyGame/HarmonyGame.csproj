@@ -126,6 +126,7 @@
     <Compile Include="Particle.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Fireball.cs" />
+    <Compile Include="SpriteHandler.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="Wizard.cs" />
     <Compile Include="Sprite.cs" />
