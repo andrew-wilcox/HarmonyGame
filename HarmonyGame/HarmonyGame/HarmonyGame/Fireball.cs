@@ -15,11 +15,9 @@ namespace HarmonyGame
     {
         const int MAX_DISTANCE = 500;
         const string FIREBALL_ASSETNAME = "fireball";
-        Vector2 FIREBALL_VELOCITY = new Vector2(200, 0);
+        Vector2 VELOCITY = new Vector2(200, 0);
 
         public bool Visible = false;
-
-        Vector2 mStartPosition, mVelocity;
 
         Sprite Creator;
 
@@ -35,7 +33,7 @@ namespace HarmonyGame
 
         public void Update(GameTime gameTime)
         {
-            base.Update(gameTime, mVelocity);
+            base.Update(gameTime, VELOCITY);
         }
 
         public override void Draw(SpriteBatch theSpriteBatch)
@@ -45,7 +43,7 @@ namespace HarmonyGame
 
         public void Launch(Vector2 position)
         {
-            base.Launch(FIREBALL_VELOCITY, position);
+            base.Launch(VELOCITY, position);
         }
     }
 }

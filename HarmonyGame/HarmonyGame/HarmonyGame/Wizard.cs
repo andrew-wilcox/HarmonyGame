@@ -34,7 +34,6 @@ namespace HarmonyGame
 
         State mCurrentState = State.Walking;
 
-        Vector2 mDirection = Vector2.Zero;
         Vector2 mVelocity = Vector2.Zero;
         Vector2 mStartingPosition = Vector2.Zero;
 
@@ -57,13 +56,13 @@ namespace HarmonyGame
 
             Position = new Vector2(START_POSITION_X, START_POSITION_Y);
             base.LoadContent(theContentManager, WIZARD_ASSETNAME);
-            Source = new Rectangle(0, 0, RESOLUTION_X, Source.Height);
+            Source = new Rectangle(0, 0, RESOLUTION_X, RESOLUTION_Y);
 
             ResolutionX = RESOLUTION_X;
             ResolutionY = RESOLUTION_Y;
         }
 
-        public void Update(GameTime gameTime, List<Sprite> platforms)
+        public void Update(GameTime gameTime, List<MainFloor> platforms)
         {
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
 
@@ -143,7 +142,7 @@ namespace HarmonyGame
             if (mCurrentState == State.Walking)
             {
                 mCurrentState = State.Ducking;
-                mDirection = mVelocity = Vector2.Zero;
+                mVelocity = Vector2.Zero;
 
                 Source = new Rectangle(RESOLUTION_X, 0, RESOLUTION_X, Source.Height);
             }
@@ -210,17 +209,6 @@ namespace HarmonyGame
                     onFloor = false;
                     onFloorSprite = null;
                 }
-                /*if (this.Position.X > onFloorSprite.Position.X + onFloorSprite.SpriteTexture.Width)
-                {
-                    onFloor = false;
-                    onFloorSprite = null;
-                }
-
-                else if (this.Position.X < onFloorSprite.Position.X)
-                {
-                    onFloor = false;
-                    onFloorSprite = null;
-                }*/
             }
         }
 
@@ -232,7 +220,7 @@ namespace HarmonyGame
             }
         }
 
-        public void ManageFloorCollisions(List<Sprite> platforms)
+        public void ManageFloorCollisions(List<MainFloor> platforms)
         {
             CollisionHandler CH = new CollisionHandler();
 

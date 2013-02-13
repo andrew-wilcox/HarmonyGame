@@ -19,16 +19,18 @@ namespace HarmonyGame
     /// </summary>
     public class MainGame : Microsoft.Xna.Framework.Game
     {
+        SpriteHandler SH;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         Wizard mWizard;
 
-        Sprite mFloor;
-        Sprite mFloor2;
+        MainFloor mFloor1;
+        MainFloor mFloor2;
 
         List<Sprite> bgList;
-        List<Sprite> platforms;
+        List<MainFloor> platforms;
         List<Fireball> Fireballs;
 
         public MainGame()
@@ -45,17 +47,17 @@ namespace HarmonyGame
         /// </summary>
         protected override void Initialize()
         {
+            SH = new SpriteHandler();
             bgList = new List<Sprite>();
-            platforms = new List<Sprite>();
+            platforms = new List<MainFloor>();
             Fireballs = new List<Fireball>();
 
-            mFloor = new Sprite();
-            mFloor2 = new Sprite();
+            mFloor1 = new MainFloor(new Vector2(0, 445), new Vector2(0, 1), false);
+            mFloor2 = new MainFloor(new Vector2(175, 400), new Vector2(0, 1), false);
 
             mWizard = new Wizard();
-            mFloor = new Sprite();
 
-            platforms.Add(mFloor);
+            platforms.Add(mFloor1);
             platforms.Add(mFloor2);
 
             //Initialize all background objects
@@ -78,7 +80,7 @@ namespace HarmonyGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             mWizard.LoadContent(this.Content);
-            mWizard.Scale = 2.5f;
+            mWizard.Scale = 3.0f;
 
             foreach (Fireball f in mWizard.mFireballs)
             {
@@ -92,13 +94,11 @@ namespace HarmonyGame
                 bg.Position = new Vector2(bg.Size.Width * i ,0);
             }
 
-            mFloor.LoadContent(this.Content, "floor");
-            mFloor.Position = new Vector2(0, 445);
-            mFloor.ResolutionX = 300;
-            mFloor.ResolutionY = 3;
+            mFloor1.LoadContent(this.Content);
+            mFloor1.ResolutionX = mFloor1.SpriteTexture.Width;
+            mFloor1.ResolutionY = mFloor1.SpriteTexture.Height;
 
-            mFloor2.LoadContent(this.Content, "floor");
-            mFloor2.Position = new Vector2(175, 400);
+            mFloor2.LoadContent(this.Content);
             mFloor2.ResolutionX = 300;
             mFloor2.ResolutionY = 3;
         }
@@ -119,8 +119,10 @@ namespace HarmonyGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            mFloor.Update(gameTime, Vector2.Zero);
-            mFloor2.Update(gameTime, Vector2.Zero);
+            foreach (MainFloor f in platforms)
+            {
+                f.Update(gameTime);
+            }
             updateProjectiles(gameTime, Fireballs);
             moveBackground(gameTime, bgList);
             mWizard.Update(gameTime, platforms);
@@ -148,8 +150,10 @@ namespace HarmonyGame
                 f.Draw(spriteBatch);
             }
 
-            mFloor.Draw(spriteBatch);
-            mFloor2.Draw(spriteBatch);
+            foreach (MainFloor f in platforms)
+            {
+                f.Draw(spriteBatch);
+            }
 
             mWizard.Draw(spriteBatch);
   

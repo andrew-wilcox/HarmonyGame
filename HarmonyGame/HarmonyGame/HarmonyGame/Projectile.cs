@@ -11,7 +11,6 @@ namespace HarmonyGame
 {
     class Projectile : Sprite
     {
-        Vector2 mVelocity;
         bool Visible = false;
 
         int maxDistance;
@@ -21,7 +20,12 @@ namespace HarmonyGame
 
         Sprite Creator;
 
-        public void Update(GameTime gameTime)
+        public Projectile()
+        {
+
+        }
+
+        public void Update(GameTime gameTime, Vector2 velocity)
         {
             distanceTraveled += Pythagorean(Position - lastPosition);
 
@@ -32,7 +36,7 @@ namespace HarmonyGame
 
             if (Visible)
             {
-                base.Update(gameTime, mVelocity);
+                base.Update(gameTime, velocity);
             }
         }
 
@@ -54,7 +58,6 @@ namespace HarmonyGame
             Visible = true;
             distanceTraveled = 0;
             Position = position;
-            mVelocity = velocity;
         }
 
         public double Pythagorean(Vector2 v)
