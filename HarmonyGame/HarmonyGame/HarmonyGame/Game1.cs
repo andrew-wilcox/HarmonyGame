@@ -29,9 +29,12 @@ namespace HarmonyGame
         MainFloor mFloor1;
         MainFloor mFloor2;
 
+        MovingPlatform movingPlatform;
+
         List<Sprite> bgList;
         List<MainFloor> platforms;
         List<Fireball> Fireballs;
+        List<Vector2> path;
 
         public MainGame()
         {
@@ -51,6 +54,14 @@ namespace HarmonyGame
             bgList = new List<Sprite>();
             platforms = new List<MainFloor>();
             Fireballs = new List<Fireball>();
+
+            path = new List<Vector2>();
+            path.Add(new Vector2(200, 250));
+            path.Add(new Vector2(300, 250));
+            path.Add(new Vector2(300, 350));
+            path.Add(new Vector2(400, 450));
+
+            movingPlatform = new MovingPlatform(new Vector2(0, 1), false, path, new Vector2(10, 0));
 
             mFloor1 = new MainFloor(new Vector2(0, 445), new Vector2(0, 1), false);
             mFloor2 = new MainFloor(new Vector2(175, 400), new Vector2(0, 1), false);
@@ -101,6 +112,10 @@ namespace HarmonyGame
             mFloor2.LoadContent(this.Content);
             mFloor2.ResolutionX = 300;
             mFloor2.ResolutionY = 3;
+
+            movingPlatform.LoadContent(this.Content);
+            movingPlatform.ResolutionX = 61;
+            movingPlatform.ResolutionY = 5;
         }
 
         /// <summary>
@@ -123,6 +138,8 @@ namespace HarmonyGame
             {
                 f.Update(gameTime);
             }
+
+            movingPlatform.Update(gameTime);
             updateProjectiles(gameTime, Fireballs);
             moveBackground(gameTime, bgList);
             mWizard.Update(gameTime, platforms);
@@ -144,6 +161,8 @@ namespace HarmonyGame
             {
                 i.Draw(spriteBatch);
             }
+
+            movingPlatform.Draw(spriteBatch);
 
             foreach (Fireball f in Fireballs)
             {

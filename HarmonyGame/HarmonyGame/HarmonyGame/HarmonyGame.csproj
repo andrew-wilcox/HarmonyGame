@@ -116,6 +116,7 @@
     <Compile Include="EventObject.cs" />
     <Compile Include="Hazard.cs" />
     <Compile Include="InanimateObject.cs" />
+    <Compile Include="MovingPlatform.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Enemy.cs" />

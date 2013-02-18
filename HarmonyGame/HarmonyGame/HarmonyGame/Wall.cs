@@ -13,8 +13,8 @@ namespace HarmonyGame
 {
     class Wall : Obstacle
     {
-        private Vector2 facing = Vector2.Zero;
-        private bool thin;
+        protected Vector2 facing = Vector2.Zero;
+        protected bool thin;
 
         public override void Collides(Sprite sprite)
         {

@@ -22,8 +22,8 @@ namespace HarmonyGame
         const int WIZARD_SPEED = 160;
         const int JUMP_SPEED = 500;
         const float GRAVITY = 25f;
-        const int RESOLUTION_Y = 13;
-        const int RESOLUTION_X = 13;
+        const int RESOLUTION_Y = 10;
+        const int RESOLUTION_X = 12;
 
         enum State
         {
@@ -204,11 +204,13 @@ namespace HarmonyGame
             if (onFloorSprite != null)
             {
                 CollisionHandler CH = new CollisionHandler();
-                if(!CH.Collides(this, onFloorSprite))
+
+                //Put in checking for 
+                /*if(!CH.Collides(this, onFloorSprite))
                 {
                     onFloor = false;
                     onFloorSprite = null;
-                }
+                }*/
             }
         }
 
