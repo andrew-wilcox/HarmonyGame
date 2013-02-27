@@ -61,9 +61,9 @@ namespace HarmonyGame
             path.Add(new Vector2(300, 350));
             path.Add(new Vector2(400, 450));
 
-            movingPlatform = new MovingPlatform(new Vector2(0, 1), false, path, new Vector2(10, 0));
+            movingPlatform = new MovingPlatform(new Vector2(0, 1), false, path, 60);
 
-            mFloor1 = new MainFloor(new Vector2(0, 445), new Vector2(0, 1), false);
+            mFloor1 = new MainFloor(new Vector2(250, 445), new Vector2(0, 1), false);
             mFloor2 = new MainFloor(new Vector2(175, 400), new Vector2(0, 1), false);
 
             mWizard = new Wizard();
@@ -103,6 +103,7 @@ namespace HarmonyGame
             {
                 bg.LoadContent(this.Content, "Background0" + (i+1));
                 bg.Position = new Vector2(bg.Size.Width * i ,0);
+                i++;
             }
 
             mFloor1.LoadContent(this.Content);

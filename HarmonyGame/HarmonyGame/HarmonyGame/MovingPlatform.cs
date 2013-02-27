@@ -16,13 +16,14 @@ namespace HarmonyGame
         const string ASSETNAME = "movingPlatform";
 
         private List<Vector2> pathPoints;
-        private Vector2 mVelocity;
+        private int mVelocity;
+        private Vector2 currentVelocity;
         private Vector2 mPosition;
         private int currentPointIndex;
 
         ContentManager mContentManager;
 
-        public MovingPlatform(Vector2 facingVector, bool thinBool, List<Vector2> points, Vector2 vel)
+        public MovingPlatform(Vector2 facingVector, bool thinBool, List<Vector2> points, int vel)
         {
             facing = facingVector;
             thin = thinBool;
@@ -44,57 +45,68 @@ namespace HarmonyGame
         {
             CheckNewPoint();
 
-            Vector2 delta = Position - pathPoints[currentPointIndex + 1];
+            Vector2 delta = -(Position - pathPoints[currentPointIndex + 1]);
 
-            var magnitude = Math.Sqrt(delta.X * delta.X + delta.Y * delta.Y);
+            var magnitude = Math.Sqrt((delta.X * delta.X) + (delta.Y * delta.Y));
 
             Vector2 unitDelta = new Vector2((float) (delta.X / magnitude), (float) (delta.Y / magnitude));
 
-            mVelocity *= unitDelta;
+            if ((float)gameTime.ElapsedGameTime.TotalSeconds > 0)
+            {
+                currentVelocity = mVelocity * unitDelta * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position += currentVelocity;
+            }
 
-            Position += mVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //base.Update(gameTime, mVelocity);
+            base.Update(gameTime, currentVelocity);
         }
 
         private void CheckNewPoint()
         {
-            if (mVelocity.X > 0)
+            if (currentVelocity.X > 0 && mPosition.X != pathPoints[currentPointIndex + 1].X)
             {
-                if (mPosition.X > pathPoints[currentPointIndex + 1].X)
+                if (mPosition.X >= pathPoints[currentPointIndex + 1].X)
                 {
                     currentPointIndex++;
                     mPosition.X = pathPoints[currentPointIndex].X;
+                    mPosition.Y = pathPoints[currentPointIndex].Y;
+                    currentVelocity = Vector2.Zero;
                 }
             }
-            else
+            else if (currentVelocity.X < 0 && mPosition.X != pathPoints[currentPointIndex + 1].X)
             {
                 if (mPosition.X < pathPoints[currentPointIndex + 1].X)
                 {
                     currentPointIndex++;
                     mPosition.X = pathPoints[currentPointIndex].X;
+                    mPosition.Y = pathPoints[currentPointIndex].Y;
+                    currentVelocity = Vector2.Zero;
                 }
             }
 
-            if (mVelocity.Y > 0)
+            else if (currentVelocity.Y > 0 && mPosition.Y != pathPoints[currentPointIndex + 1].Y)
             {
-                if (mPosition.Y > pathPoints[currentPointIndex + 1].Y)
+                if (mPosition.Y >= pathPoints[currentPointIndex + 1].Y)
                 {
                     currentPointIndex++;
+                    mPosition.X = pathPoints[currentPointIndex].X;
                     mPosition.Y = pathPoints[currentPointIndex].Y;
+                    currentVelocity = Vector2.Zero;
                 }
             }
-            else
+            else if (currentVelocity.Y < 0 && mPosition.Y != pathPoints[currentPointIndex + 1].Y)
             {
                 if (mPosition.Y < pathPoints[currentPointIndex + 1].Y)
                 {
                     currentPointIndex++;
+                    mPosition.X = pathPoints[currentPointIndex].X;
                     mPosition.Y = pathPoints[currentPointIndex].Y;
+                    currentVelocity = Vector2.Zero;
                 }
             }
-            if (currentPointIndex == pathPoints.Count-1)
+
+            if (currentPointIndex == pathPoints.Count - 1)
             {
-                currentPointIndex = 0;
+                currentPointIndex = -1;
             }
         }
     }
